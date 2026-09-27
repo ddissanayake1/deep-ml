@@ -1,11 +1,15 @@
-import torch
+import numpy
+def calculate_eigenvalues(matrix: list[list[float|int]]) -> list[float]:
 
-def calculate_eigenvalues(matrix: torch.Tensor) -> torch.Tensor:
-    """
-    Compute eigenvalues of a 2x2 matrix using PyTorch.
-    Input: 2x2 tensor; Output: 1-D tensor with the two eigenvalues in descending order (highest to lowest).
-    """
-    # Your implementation here
-    vals, vecs = torch.linalg.eig(matrix)
+	# det (a-l, b)
+	#	  (c, d-l)
+	# (a-l)*(d-l) - b*c
+	# a*d - l*(a+d) + l**2 - b*c
+	# l**2 - l*(a+d) + (a*d - b*c)
+	# coeffs = 1, (a+d), (a*d - b*c)
 
-    return vals[torch.argsort(vals.real, descending=True)]
+	a,b = matrix[0]
+	c,d = matrix[1]
+
+	eigenvalues = numpy.roots([1, -(a+d), (a*d-b*c)])
+	return eigenvalues
